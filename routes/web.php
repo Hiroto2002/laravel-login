@@ -1,10 +1,7 @@
 <?php
-// 使う場所を書く
-use App\Book;
-// httpリクエストを使うためのメソッドを呼べる
-use Illuminate\Http\Request;
-// use Illuminate\Support\Facades\Route;
 
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\AuthController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,30 +13,17 @@ use Illuminate\Http\Request;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+// ログイン画面の表示るーと
+Route::get("/",[AuthController::class,
+"showLogin"])->name("showLogin");
 
-/**
- * 本の一覧表示（books.blade.php）
- */
-
- //ブログ一覧画面を表示
-// Route::get('/', [BookController::class,'showList'])->name("book.index");
-Route::get('/','App\Http\Controllers\BookController@showList')->name("book.index");
+// ログインの処理ルート
+Route::post("login",[AuthController::class,
+"login"])->name("login");
 
 
-/**
- * 本を追加
- */
-Route::post("/books",function(Request $request){
-    // 
-});
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
 
-/**
- * 本を削除
- */
-Route::delete('/book/{book}',function(Book $book){
-    // 
-});
-
+require __DIR__.'/auth.php';
